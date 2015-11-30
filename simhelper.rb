@@ -29,6 +29,7 @@ class SimHelper
       shutdown
       %x[ xcrun simctl erase #@uuid ]
     end
+
   end
 
   attr :all_sims
@@ -120,12 +121,12 @@ class SimHelper
     sims = []
     sims_input.split(/\n/).each do |sim_string|
       next if /unavailable/.match sim_string
-      components = /(?<=\()(.*?)(?=\))/.match sim_string # Captures the two strings between brackets
-      if components != nil
-        name = /.*?[^\(]*/.match(sim_string)[0].strip # Gets the device name for the particular simulator
-        sim = Sim.new name, components[0], components[1]
-        sims << sim
-      end
+      components = sim_string.scan /\(([^\)]+)\)/ # Captures the two strings between brackets
+      next if components == nil || components.length == 0
+      name = /.*?[^\(]*/.match(sim_string)[0].strip # Gets the device name for the particular simulator
+      puts "#{components}, #{name}, #{components[0].first}, #{components[1].first}"
+      sim = Sim.new name, components[0].first, components[1].first
+      sims << sim
     end
     return sims
   end
