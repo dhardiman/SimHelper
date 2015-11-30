@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require "./simhelper"
+
+simhelper = SimHelper.new
+
+sim = simhelper.booted_sim
+puts sim
+SimHelper.kill_all
+sim.erase
