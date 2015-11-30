@@ -131,7 +131,6 @@ class SimHelper
       components = sim_string.scan /\(([^\)]+)\)/ # Captures the two strings between brackets
       next if components == nil || components.length == 0
       name = /.*?[^\(]*/.match(sim_string)[0].strip # Gets the device name for the particular simulator
-      puts "#{components}, #{name}, #{components[0].first}, #{components[1].first}"
       sim = Sim.new name, components[0].first, components[1].first
       sims << sim
     end
