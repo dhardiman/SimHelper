@@ -115,13 +115,17 @@ class SimHelper
     #     Resizable iPhone (4A6E7C6A-4BC0-4E74-8C70-A6E1D72EE706) (Shutdown)
     #     Resizable iPad (39B8A5AC-1AF5-44FC-A433-3DFBDA7F07C5) (Shutdown)
     # We only care about the bits under iOS 8.1 for now
-    sims_input = sims_input.gsub(/.*--\siOS\s8\.1\ --/m, "").strip # Remove all content before the 8.1 devices list
+    sims_input = sims_input.gsub(/.*==\sDevices\ ==/m, "").strip # Remove all content before the devices list
+    sims_input = sims_input.gsub(/==\sDevice Pairs\ ==.*/m, "").strip # And remove all the device pairs info
     sims = []
     sims_input.split(/\n/).each do |sim_string|
-      components = /(?<=\()(.*?)(?=\))/.match(sim_string) # Captures the two strings between brackets
-      name = /.*?[^\(]*/.match(sim_string)[0].strip # Gets the device name for the particular simulator
-      sim = Sim.new name, components[0], components[1]
-      sims << sim
+      next if /unavailable/.match sim_string
+      components = /(?<=\()(.*?)(?=\))/.match sim_string # Captures the two strings between brackets
+      if components != nil
+        name = /.*?[^\(]*/.match(sim_string)[0].strip # Gets the device name for the particular simulator
+        sim = Sim.new name, components[0], components[1]
+        sims << sim
+      end
     end
     return sims
   end
