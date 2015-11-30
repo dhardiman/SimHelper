@@ -56,7 +56,7 @@ class SimHelper
   end
 
   def self.kill_all
-    %x[ killall "iOS Simulator" ]
+    %x[ killall "Simulator" ]
   end
 
   def boot(sim_name)
