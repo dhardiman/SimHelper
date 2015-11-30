@@ -55,6 +55,13 @@ class SimHelper
     return sim[0] unless sim.count == 0
   end
 
+  def booted_sim
+    sim = @all_sims.select do |sim|
+      sim.state.eql? Sim::BOOTED
+    end
+    return sim[0] unless sim.count == 0
+  end
+
   def self.kill_all
     %x[ killall "Simulator" ]
   end
